@@ -1,0 +1,46 @@
+name: Build Launcher (Windows)
+
+# Compila o ImperaGenesis.exe automaticamente sempre que voce enviar
+# (git push) uma alteracao para o branch "main", ou manualmente na aba
+# "Actions" do repositorio (botao "Run workflow").
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout do codigo
+        uses: actions/checkout@v4
+
+      - name: Instalar Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Instalar a CLI do Wails
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.5.1
+
+      - name: Compilar o launcher
+        run: wails build
+
+      - name: Gerar o .sha256 (necessario para o auto-update do launcher)
+        shell: pwsh
+        run: |
+          $hash = (Get-FileHash -Algorithm SHA256 build\bin\ImperaGenesis.exe).Hash.ToLower()
+          Set-Content -Path build\bin\ImperaGenesis.exe.sha256 -Value $hash -NoNewline
+
+      - name: Publicar o resultado (aba Actions -> este run -> Artifacts)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ImperaGenesis-Launcher
+          path: |
+            build/bin/ImperaGenesis.exe
+            build/bin/ImperaGenesis.exe.sha256

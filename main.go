@@ -146,7 +146,7 @@ func main() {
 	// GET /client/manifest by the same Go backend that also serves the
 	// account panel, e.g.:
 	//   http://YOUR_SERVER:PORT/client/manifest
-	manifestURL := "http://187.127.62.166:8000/manifest.json"
+	manifestURL := "http://187.127.62.166:8000/client/manifest"
 
 	executable, err := os.Executable()
 	if err != nil {

@@ -139,14 +139,14 @@ func main() {
 	// just a folder you serve on your web server, e.g.:
 	//   http://YOUR_SERVER:PORT/launcher/
 	// containing ImperaGenesis.exe + ImperaGenesis.exe.sha256.
-	launcherBaseURL := "http://187.127.62.166:8000/launcher_client/"
+	launcherBaseURL := "http://187.127.62.166:8090/launcher/"
 
 	// manifestURL: KrayAccOpenTibia's manifest endpoint (see cmd/manifest and
 	// src/handler/manifest.go in that project) - it's served dynamically at
 	// GET /client/manifest by the same Go backend that also serves the
 	// account panel, e.g.:
 	//   http://YOUR_SERVER:PORT/client/manifest
-	manifestURL := "http://187.127.62.166:8000/client/manifest"
+	manifestURL := "http://187.127.62.166:8090/client/manifest"
 
 	executable, err := os.Executable()
 	if err != nil {
